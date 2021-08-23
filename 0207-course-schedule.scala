@@ -9,18 +9,18 @@ object Solution {
             val out = t(0) +: edges.getOrElse(t(1), List[Int]())
             edges = edges + (t(1) -> out)
         })
-        val res = !nodes.exists(x => bfs(x, List[Int](x)))
+        val res = !nodes.exists(x => bfs(x, Set[Int](x)))
         nodes = Set[Int]()
         edges = Map[Int, List[Int]]()
         visited = Set[Int]()
         res
     }
-    def bfs(x: Int, path: List[Int]): Boolean = {
+    def bfs(x: Int, path: Set[Int]): Boolean = {
         visited = visited + x
         val successors = edges.getOrElse(x, List[Int]())
         successors.exists(y => {
             if (path.contains(y)) true
-            else if (!visited.contains(y)) bfs(y, y +: path)
+            else if (!visited.contains(y)) bfs(y, path + y)
             else false
         })
     }
